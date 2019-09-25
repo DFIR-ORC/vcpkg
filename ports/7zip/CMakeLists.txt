@@ -1,7 +1,6 @@
 # Created from 7-zip v19.00 - 7zip/CPP/7zip/Bundles/Format7zF
 
 cmake_minimum_required(VERSION 3.11)
-cmake_policy(VERSION 3.11)
 
 project(7zip LANGUAGES C CXX ASM_MASM)
 
@@ -127,14 +126,6 @@ set(SRC_C
     C/Aes.c
     C/7zCrc.c
     C/XzCrc64.c
-)
-
-set_source_files_properties(
-    ${SRC_COMPRESS}
-    ${SRC_CRYPTO}
-    ${SRC_C}
-        PROPERTIES
-            COMPILE_FLAGS $<$<CONFIG:RELEASE>:"/O2">
 )
 
 set(SRC_OTHER
@@ -321,6 +312,10 @@ target_compile_definitions(7zip
         -D_UNICODE
 )
 
+if(NOT BUILD_SHARED_LIBS)
+    target_compile_definitions(7zip PUBLIC -D_7ZIP_STATIC)
+endif()
+
 target_compile_options(7zip
     PRIVATE
         /wd5043
@@ -347,12 +342,37 @@ set(PUBLIC_HEADERS
     CPP/Common/MyWindows.h
 )
 
-install(
-    TARGETS 7zip
-    EXPORT 7zip
-    ARCHIVE DESTINATION lib
-    LIBRARY DESTINATION lib
-    RUNTIME DESTINATION bin
+# 7zip::extras is a collection of sources that are not exported but very useful
+add_library(extras
+    STATIC
+        CPP/7zip/Common/FileStreams.cpp
+        CPP/Common/IntToString.cpp
+        CPP/Common/MyString.cpp
+        CPP/Windows/FileFind.cpp
+        CPP/Windows/FileName.cpp
+        CPP/Windows/FileIO.cpp
+        CPP/Windows/PropVariant.cpp
+        CPP/Windows/PropVariantConv.cpp
+        CPP/Windows/PropVariantUtils.cpp
+)
+
+target_link_libraries(extras PRIVATE 7zip)
+
+list(APPEND PUBLIC_HEADERS
+    CPP/7zip/Common/FileStreams.h
+    CPP/7zip/Common/StreamObjects.h
+    CPP/Common/IntToString.h
+    CPP/Common/MyCom.h
+    CPP/Common/MyBuffer.h
+    CPP/Common/MyString.h
+    CPP/Common/MyVector.h
+    CPP/Windows/Defs.h
+    CPP/Windows/FileFind.h
+    CPP/Windows/FileIO.h
+    CPP/Windows/FileName.h
+    CPP/Windows/PropVariant.h
+    CPP/Windows/PropVariantConv.h
+    CPP/Windows/PropVariantUtils.h
 )
 
 # Headers makes relative includes so directory structure must be kept
@@ -366,9 +386,26 @@ foreach(HEADER ${PUBLIC_HEADERS})
 endforeach()
 
 install(
+    TARGETS 7zip extras
+    EXPORT 7zip
+    ARCHIVE DESTINATION lib
+    LIBRARY DESTINATION lib
+    RUNTIME DESTINATION bin
+)
+
+install(
     EXPORT 7zip
     DESTINATION share/7zip
     FILE 7zipConfig.cmake
     NAMESPACE 7zip::
-    CONFIGURATIONS Release
 )
+
+# Headers makes relative includes so directory structure must be kept
+foreach(HEADER ${PUBLIC_HEADERS})
+    get_filename_component(HEADER_DIR ${HEADER} DIRECTORY)
+    install(
+        FILES ${HEADER}
+        CONFIGURATIONS Release
+        DESTINATION include/7zip/${HEADER_DIR}
+    )
+endforeach()

@@ -8,6 +8,8 @@ vcpkg_from_github(
     HEAD_REF master
     PATCHES
         ${CMAKE_CURRENT_LIST_DIR}/aliastemplates.patch
+        ${CMAKE_CURRENT_LIST_DIR}/replace_sscanf_with_sscanf_s.patch
+        ${CMAKE_CURRENT_LIST_DIR}/fix_debug_build.patch
 )
 
 vcpkg_find_acquire_program(PYTHON3)
@@ -25,10 +27,10 @@ vcpkg_configure_cmake(
         -DPYTHON_MODULE_EXTENSION=.dll
     OPTIONS_RELEASE
         -DPYTHON_IS_DEBUG=OFF
-        -DPYTHON_LIBRARIES=${CURRENT_INSTALLED_DIR}/lib/python36.lib
+        -DPYTHON_LIBRARIES=${CURRENT_INSTALLED_DIR}/lib/python37.lib
     OPTIONS_DEBUG
         -DPYTHON_IS_DEBUG=ON
-        -DPYTHON_LIBRARIES=${CURRENT_INSTALLED_DIR}/debug/lib/python36_d.lib
+        -DPYTHON_LIBRARIES=${CURRENT_INSTALLED_DIR}/debug/lib/python37_d.lib
 )
 
 vcpkg_install_cmake()
