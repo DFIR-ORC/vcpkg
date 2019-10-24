@@ -61,6 +61,7 @@ add_library(tlsh ${TLSH_SRCS})
 
 target_include_directories(tlsh
     PUBLIC
+        $<BUILD_INTERFACE:${TLSH_BINARY_DIR}/include>
         $<BUILD_INTERFACE:${TLSH_SOURCE_DIR}/include>
     INTERFACE
         $<INSTALL_INTERFACE:include>
@@ -90,7 +91,7 @@ target_link_libraries(tlsh PRIVATE $<$<CXX_COMPILER_ID:MSVC>:winfunc>)
 if(NOT TLSH_NO_INSTALL_HEADERS)
     set(PUBLIC_HEADERS
         "${TLSH_SOURCE_DIR}/include/tlsh.h"
-        "${TLSH_SOURCE_DIR}/include/version.h"
+        "${TLSH_BINARY_DIR}/include/version.h"
         )
     set_target_properties(tlsh PROPERTIES PUBLIC_HEADER "${PUBLIC_HEADERS}")
 endif()

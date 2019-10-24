@@ -111,8 +111,8 @@ message(STATUS "Checksum: ${TLSH_CHECKSUM}")
 # arguments to set - and hence experiment with the distance parameters
 option(TLSH_DISTANCE_PARAMETERS "Enable cli control of the distance parameters" OFF)
 
-configure_file(cmake/VERSION.in ${CMAKE_CURRENT_SOURCE_DIR}/VERSION)
-configure_file(cmake/version.h.in ${CMAKE_CURRENT_SOURCE_DIR}/include/version.h)
+configure_file(cmake/VERSION.in ${TLSH_BINARY_DIR}/VERSION)
+configure_file(cmake/version.h.in ${TLSH_BINARY_DIR}/include/version.h)
 
 if (CMAKE_BUILD_TYPE STREQUAL Debug)
     if(CMAKE_COMPILER_IS_GNUCXX)
