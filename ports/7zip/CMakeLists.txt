@@ -380,5 +380,4 @@ install(
     DESTINATION share/7zip
     FILE 7zipConfig.cmake
     NAMESPACE 7zip::
-    CONFIGURATIONS Release
 )
