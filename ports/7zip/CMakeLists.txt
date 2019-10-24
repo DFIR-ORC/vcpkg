@@ -419,14 +419,51 @@ set(PUBLIC_HEADERS
     CPP/Common/MyTypes.h
     CPP/Common/MyUnknown.h
     CPP/Common/MyWindows.h
+
+    C/Compiler.h
+    CPP/7zip/Common/FileStreams.h
+    CPP/7zip/Common/StreamObjects.h
+    CPP/7zip/Common/UniqBlocks.h
+    CPP/Common/Common.h
+    CPP/Common/IntToString.h
+    CPP/Common/MyCom.h
+    CPP/Common/MyBuffer.h
+    CPP/Common/MyLinux.h
+    CPP/Common/MyString.h
+    CPP/Common/MyVector.h
+    CPP/Common/NewHandler.h
+    CPP/Windows/Defs.h
+    CPP/Windows/FileFind.h
+    CPP/Windows/FileIO.h
+    CPP/Windows/FileName.h
+    CPP/Windows/PropVariant.h
+    CPP/Windows/PropVariantConv.h
+    CPP/Windows/PropVariantUtils.h
+    CPP/Windows/TimeUtils.h
 )
 
 if(NOT BUILD_SHARED_LIBS)
     target_compile_definitions(7zip PUBLIC -D_7ZIP_STATIC)
 endif()
 
+# 7zip::extras is a collection of sources that are not exported but very useful
+add_library(extras
+    STATIC
+        CPP/7zip/Common/FileStreams.cpp
+        CPP/Common/IntToString.cpp
+        CPP/Common/MyString.cpp
+        CPP/Windows/FileFind.cpp
+        CPP/Windows/FileName.cpp
+        CPP/Windows/FileIO.cpp
+        CPP/Windows/PropVariant.cpp
+        CPP/Windows/PropVariantConv.cpp
+        CPP/Windows/PropVariantUtils.cpp
+)
+
+target_link_libraries(extras PRIVATE 7zip)
+
 install(
-    TARGETS 7zip
+    TARGETS 7zip extras
     EXPORT 7zip-targets
     ARCHIVE DESTINATION lib
     LIBRARY DESTINATION lib
@@ -449,6 +486,7 @@ configure_package_config_file(
   "${CMAKE_CURRENT_BINARY_DIR}/7zip-config.cmake"
   INSTALL_DESTINATION "share/7zip"
 )
+
 install(
   FILES "${CMAKE_CURRENT_BINARY_DIR}/7zip-config.cmake"
   DESTINATION "share/7zip"
@@ -459,3 +497,4 @@ install(
     DESTINATION share/7zip
     NAMESPACE 7zip::
 )
+
