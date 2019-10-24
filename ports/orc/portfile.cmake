@@ -7,7 +7,7 @@ vcpkg_from_github(
     PATCHES
       0003-dependencies-from-vcpkg.patch
       0004-update-tzdata.patch
-      0005-disable-tzdata.patch
+      0005-replace-ftp-with-http-for-tzdata.patch
 )
 
 file(REMOVE "${SOURCE_PATH}/cmake_modules/FindGTest.cmake")
