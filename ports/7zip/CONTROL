@@ -1,5 +1,5 @@
 Source: 7zip
-Version: 19.00
+Version: 19.00-0-dfirorc
 Port-Version: 2
 Homepage: https://www.7-zip.org
 Description: Library for archiving file with a high compression ratio.
