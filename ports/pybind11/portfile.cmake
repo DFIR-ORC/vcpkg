@@ -9,6 +9,7 @@ vcpkg_from_github(
     PATCHES
         ${CMAKE_CURRENT_LIST_DIR}/aliastemplates.patch
         ${CMAKE_CURRENT_LIST_DIR}/replace_sscanf_with_sscanf_s.patch
+        ${CMAKE_CURRENT_LIST_DIR}/fix_debug_build.patch
 )
 
 vcpkg_find_acquire_program(PYTHON3)
