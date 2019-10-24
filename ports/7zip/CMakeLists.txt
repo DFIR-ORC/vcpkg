@@ -421,6 +421,10 @@ set(PUBLIC_HEADERS
     CPP/Common/MyWindows.h
 )
 
+if(NOT BUILD_SHARED_LIBS)
+    target_compile_definitions(7zip PUBLIC -D_7ZIP_STATIC)
+endif()
+
 install(
     TARGETS 7zip
     EXPORT 7zip-targets
