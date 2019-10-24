@@ -1,4 +1,4 @@
-vcpkg_fail_port_install(ON_ARCH "arm" ON_TARGET "uwp" "linux" "osx")
+include(vcpkg_common_functions)
 
 set(7ZIP_VERSION 19.00)
 vcpkg_download_distfile(ARCHIVE
@@ -27,6 +27,14 @@ vcpkg_copy_pdbs()
 
 file(
     INSTALL ${CMAKE_CURRENT_LIST_DIR}/License.txt
-    DESTINATION ${CURRENT_PACKAGES_DIR}/share/${PORT}
+    DESTINATION ${CURRENT_PACKAGES_DIR}/share/7zip
     RENAME copyright
 )
+
+file(
+    COPY
+        ${CMAKE_CURRENT_LIST_DIR}/guids.h
+    DESTINATION ${CURRENT_PACKAGES_DIR}/include/7zip
+)
+
+vcpkg_test_cmake(PACKAGE_NAME 7zip)
