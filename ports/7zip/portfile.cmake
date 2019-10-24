@@ -43,6 +43,7 @@ file(
     COPY
         ${CMAKE_CURRENT_LIST_DIR}/7zip.h
         ${CMAKE_CURRENT_LIST_DIR}/guids.h
+        ${CMAKE_CURRENT_LIST_DIR}/extras.h
     DESTINATION ${CURRENT_PACKAGES_DIR}/include/7zip
 )
 
