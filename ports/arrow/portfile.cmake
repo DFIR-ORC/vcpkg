@@ -11,8 +11,10 @@ vcpkg_from_github(
     SHA512 f5493a62becaaee9d26e05f33509f51c98e96a5efd5d5bbdffdf70456c254b62075f1c9bc63d1119289a22d00359dfe9862078a284f8e063ecf13bd338a50728
     HEAD_REF master
     PATCHES
+    "${CMAKE_CURRENT_LIST_DIR}/all.patch"
         all.patch
         fix-msvc-1900.patch
+        fix-cpp17-build.patch
 )
 
 string(COMPARE EQUAL ${VCPKG_LIBRARY_LINKAGE} "dynamic" ARROW_BUILD_SHARED)
