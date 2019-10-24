@@ -13,6 +13,7 @@ vcpkg_from_github(
     PATCHES
         all.patch
         fix-msvc-1900.patch
+        fix-cpp17-build.patch
 )
 
 string(COMPARE EQUAL ${VCPKG_LIBRARY_LINKAGE} "dynamic" ARROW_BUILD_SHARED)
