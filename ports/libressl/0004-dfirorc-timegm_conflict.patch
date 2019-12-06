@@ -1,0 +1,107 @@
+diff --git a/apps/ocspcheck/ocspcheck.c b/apps/ocspcheck/ocspcheck.c
+index 551a8fa..5ec97ab 100644
+--- a/apps/ocspcheck/ocspcheck.c
++++ b/apps/ocspcheck/ocspcheck.c
+@@ -178,7 +178,7 @@ parse_ocsp_time(ASN1_GENERALIZEDTIME *gt)
+ 	if (ASN1_time_parse(gt->data, gt->length, &tm,
+ 		V_ASN1_GENERALIZEDTIME) == -1)
+ 		return -1;
+-	if ((rv = timegm(&tm)) == -1)
++	if ((rv = libressl_timegm(&tm)) == -1)
+ 		return -1;
+ 	return rv;
+ }
+diff --git a/crypto/CMakeLists.txt b/crypto/CMakeLists.txt
+index 0d65874..0477f32 100644
+--- a/crypto/CMakeLists.txt
++++ b/crypto/CMakeLists.txt
+@@ -865,7 +865,7 @@ endif()
+ 
+ if(NOT HAVE_TIMEGM)
+ 	set(CRYPTO_SRC ${CRYPTO_SRC} compat/timegm.c)
+-	set(EXTRA_EXPORT ${EXTRA_EXPORT} timegm)
++	set(EXTRA_EXPORT ${EXTRA_EXPORT} libressl_timegm)
+ endif()
+ 
+ if(NOT HAVE_EXPLICIT_BZERO)
+diff --git a/crypto/asn1/a_time_tm.c b/crypto/asn1/a_time_tm.c
+index b6e22cb..39b92be 100644
+--- a/crypto/asn1/a_time_tm.c
++++ b/crypto/asn1/a_time_tm.c
+@@ -325,7 +325,7 @@ ASN1_TIME_set_tm(ASN1_TIME *s, struct tm *tm)
+ {
+ 	time_t t;
+ 
+-	if ((t = timegm(tm)) == -1)
++	if ((t = libressl_timegm(tm)) == -1)
+ 		return NULL;
+ 	return (ASN1_TIME_adj(s, t, 0, 0));
+ }
+diff --git a/crypto/compat/timegm.c b/crypto/compat/timegm.c
+index 2658445..d2b50a5 100644
+--- a/crypto/compat/timegm.c
++++ b/crypto/compat/timegm.c
+@@ -200,7 +200,7 @@ struct tm *__gmtime_r(const time_t *t, struct tm *tm)
+ }
+ #endif
+ 
+-time_t timegm(struct tm *tm)
++time_t libressl_timegm(struct tm *tm)
+ {
+ 	struct tm new;
+ 	long long t = __tm_to_secs(tm);
+diff --git a/crypto/x509/x509_vfy.c b/crypto/x509/x509_vfy.c
+index ea35ce7..d4cd6bb 100644
+--- a/crypto/x509/x509_vfy.c
++++ b/crypto/x509/x509_vfy.c
+@@ -1902,7 +1902,7 @@ X509_cmp_time_internal(const ASN1_TIME *ctm, time_t *cmp_time, int clamp_notafte
+ 	 * a time_t. A time_t must be sane if you care about times after
+ 	 * Jan 19 2038.
+ 	 */
+-	if ((time1 = timegm(&tm1)) == -1)
++	if ((time1 = libressl_timegm(&tm1)) == -1)
+ 		goto out;
+ 
+ 	if (gmtime_r(&time2, &tm2) == NULL)
+diff --git a/include/compat/time.h b/include/compat/time.h
+index 540807d..3ca5b49 100644
+--- a/include/compat/time.h
++++ b/include/compat/time.h
+@@ -22,7 +22,7 @@ struct tm *__gmtime_r(const time_t * t, struct tm * tm);
+ #endif
+ 
+ #ifndef HAVE_TIMEGM
+-time_t timegm(struct tm *tm);
++time_t libressl_timegm(struct tm *tm);
+ #endif
+ 
+ #ifndef CLOCK_MONOTONIC
+diff --git a/tls/tls_conninfo.c b/tls/tls_conninfo.c
+index 8e479ed..1163fe2 100644
+--- a/tls/tls_conninfo.c
++++ b/tls/tls_conninfo.c
+@@ -125,9 +125,9 @@ tls_get_peer_cert_times(struct tls *ctx, time_t *notbefore,
+ 		goto err;
+ 	if (!ASN1_time_tm_clamp_notafter(&after_tm))
+ 		goto err;
+-	if ((*notbefore = timegm(&before_tm)) == -1)
++	if ((*notbefore = libressl_timegm(&before_tm)) == -1)
+ 		goto err;
+-	if ((*notafter = timegm(&after_tm)) == -1)
++	if ((*notafter = libressl_timegm(&after_tm)) == -1)
+ 		goto err;
+ 
+ 	return (0);
+diff --git a/tls/tls_ocsp.c b/tls/tls_ocsp.c
+index 17afb8e..3829744 100644
+--- a/tls/tls_ocsp.c
++++ b/tls/tls_ocsp.c
+@@ -64,7 +64,7 @@ tls_ocsp_asn1_parse_time(struct tls *ctx, ASN1_GENERALIZEDTIME *gt, time_t *gt_t
+ 	if (ASN1_time_parse(gt->data, gt->length, &tm,
+ 		V_ASN1_GENERALIZEDTIME) == -1)
+ 		return -1;
+-	if ((*gt_time = timegm(&tm)) == -1)
++	if ((*gt_time = libressl_timegm(&tm)) == -1)
+ 		return -1;
+ 	return 0;
+ }

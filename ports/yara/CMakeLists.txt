@@ -116,6 +116,7 @@ set(
 
 add_library(libyara ${libyara_sources})
 target_link_libraries(libyara PRIVATE ${libyara_dependencies})
+target_link_libraries(libyara PUBLIC ws2_32.lib)
 target_compile_definitions(libyara PRIVATE ${libyara_definitions})
 
 
