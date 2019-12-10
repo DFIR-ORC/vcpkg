@@ -7,10 +7,6 @@ vcpkg_from_github(
     REF 3.13.1
     SHA512 45cf35dc9e5b12758419bd8c2e49fa0f2160ab9b77a204df021df8058b4ca4220fd0b6db7f3cadf245bfbcf7481865177c4e893b06e85da6801133947808c1b4
     HEAD_REF master
-)
-
-vcpkg_apply_patches(
-    SOURCE_PATH ${SOURCE_PATH}
     PATCHES
         "${CMAKE_CURRENT_LIST_DIR}/fix-version-header.patch"
         "${CMAKE_CURRENT_LIST_DIR}/fix-tlsh-header.patch"
