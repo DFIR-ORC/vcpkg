@@ -8,10 +8,6 @@ vcpkg_from_github(
     REF release-2.14.1
     SHA512 6f45a961800fcbd4a5c8f1dac9afc7e0791ecd5aded28f3048d4ade68870a8e928704c80a5778a463b9492d561ae4568785c2b8c873f485d5d9c500d74955f07
     HEAD_REF master
-)
-
-vcpkg_apply_patches(
-    SOURCE_PATH ${SOURCE_PATH}
     PATCHES
         "${CMAKE_CURRENT_LIST_DIR}/fix-msvc-build.patch"
 )
