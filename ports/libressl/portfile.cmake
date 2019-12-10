@@ -73,6 +73,6 @@ if((VCPKG_TARGET_IS_WINDOWS OR VCPKG_TARGET_IS_UWP) AND (VCPKG_LIBRARY_LINKAGE S
     file(GLOB_RECURSE LIBS "${CURRENT_PACKAGES_DIR}/*.lib")
     foreach(LIB ${LIBS})
         string(REGEX REPLACE "(.+)-[0-9]+\\.lib" "\\1.lib" LINK "${LIB}")
-        execute_process(COMMAND "${CMAKE_COMMAND}" -E create_symlink "${LIB}" "${LINK}")
+        execute_process(COMMAND "${CMAKE_COMMAND}" -E copy "${LIB}" "${LINK}")
     endforeach()
 endif()
