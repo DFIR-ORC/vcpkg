@@ -26,6 +26,7 @@ vcpkg_configure_cmake(
     SOURCE_PATH ${SOURCE_PATH}
     PREFER_NINJA
     OPTIONS_DEBUG -DTLSH_NO_INSTALL_HEADERS=ON
+    DISABLE_PARALLEL_CONFIGURE
 )
 
 vcpkg_install_cmake()
