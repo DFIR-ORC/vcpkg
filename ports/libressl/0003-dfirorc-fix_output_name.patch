@@ -1,0 +1,28 @@
+diff --git a/crypto/CMakeLists.txt b/crypto/CMakeLists.txt
+index 0477f32..872efba 100644
+--- a/crypto/CMakeLists.txt
++++ b/crypto/CMakeLists.txt
+@@ -958,15 +958,20 @@ target_include_directories(crypto
+ 	PUBLIC
+ 		../include)
+ 
++set_target_properties(crypto PROPERTIES
++	OUTPUT_NAME crypto${CRYPTO_POSTFIX}
++	ARCHIVE_OUTPUT crypto${CRYPTO_POSTFIX})
++
++set_target_properties(crypto PROPERTIES
++	OUTPUT_NAME_DEBUG cryptod${CRYPTO_POSTFIX}
++	ARCHIVE_OUTPUT_NAME_DEBUG cryptod${CRYPTO_POSTFIX})
++
+ if (BUILD_SHARED_LIBS)
+ 	export_symbol(crypto ${CMAKE_CURRENT_BINARY_DIR}/crypto_p.sym)
+ 	target_link_libraries(crypto ${PLATFORM_LIBS})
+ 	if (WIN32)
+ 		set(CRYPTO_POSTFIX -${CRYPTO_MAJOR_VERSION})
+ 	endif()
+-	set_target_properties(crypto PROPERTIES
+-		OUTPUT_NAME crypto${CRYPTO_POSTFIX}
+-		ARCHIVE_OUTPUT_NAME crypto${CRYPTO_POSTFIX})
+ 	set_target_properties(crypto PROPERTIES VERSION
+ 		${CRYPTO_VERSION} SOVERSION ${CRYPTO_MAJOR_VERSION})
+ endif()
