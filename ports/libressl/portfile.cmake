@@ -23,6 +23,7 @@ vcpkg_extract_source_archive_ex(
     PATCHES
         0001-enable-ocspcheck-on-msvc.patch
         0002-suppress-msvc-warnings.patch
+        0003-dfirorc-fix_output_name.patch
 )
 
 vcpkg_check_features(OUT_FEATURE_OPTIONS FEATURE_OPTIONS
