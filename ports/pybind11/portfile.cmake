@@ -7,7 +7,6 @@ vcpkg_from_github(
     SHA512 546a0501c420cbbb21fb458192bae6c8d34bdd4bdbfe47fed22869e09429d6404b4e399e30c36c6d658bf8002339d051efde33685b03a00797b9cfe476cfb98e
     HEAD_REF master
     PATCHES
-        ${CMAKE_CURRENT_LIST_DIR}/replace_sscanf_with_sscanf_s.patch
         ${CMAKE_CURRENT_LIST_DIR}/fix_debug_build.patch
 )
 
