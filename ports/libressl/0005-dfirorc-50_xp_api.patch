@@ -1,0 +1,92 @@
+diff --git a/crypto/crypto_init.c b/crypto/crypto_init.c
+index 67e7920..8cf09f8 100644
+--- a/crypto/crypto_init.c
++++ b/crypto/crypto_init.c
+@@ -42,6 +42,8 @@ OPENSSL_init_crypto_internal(void)
+ 	OpenSSL_add_all_digests();
+ }
+ 
++const char* g_szCryptoInit_CompileTime = __TIME__;
++
+ int
+ OPENSSL_init_crypto(uint64_t opts, const void *settings)
+ {
+diff --git a/include/compat/pthread.h b/include/compat/pthread.h
+index 8b8c3c6..24f2c15 100644
+--- a/include/compat/pthread.h
++++ b/include/compat/pthread.h
+@@ -31,14 +31,67 @@ _pthread_once_win32_cb(PINIT_ONCE once, PVOID param, PVOID *context)
+ 	return TRUE;
+ }
+ 
+-static inline int
+-pthread_once(pthread_once_t *once, void (*cb) (void))
++extern const char* g_szCryptoInit_CompileTime;
++
++typedef BOOL (WINAPI* FnInitOnceExecuteOnce)(PINIT_ONCE InitOnce, PINIT_ONCE_FN InitFn, PVOID Context, LPVOID* Parameter);
++
++static inline int pthread_once(pthread_once_t* once, void (*cb)(void))
+ {
+-	BOOL rc = InitOnceExecuteOnce(&once->once, _pthread_once_win32_cb, cb, NULL);
+-	if (rc == 0)
+-		return -1;
+-	else
+-		return 0;
++    // Api 'InitOnceExecuteOnce' is only supported since Vista
++    HMODULE hKernel32 = GetModuleHandleA("kernel32.dll");
++    if (hKernel32)
++    {
++        FnInitOnceExecuteOnce fnInitOnceExecuteOnce =
++            (FnInitOnceExecuteOnce)GetProcAddress(hKernel32, "InitOnceExecuteOnce");
++        if (fnInitOnceExecuteOnce)
++        {
++            BOOL rc = fnInitOnceExecuteOnce(&once->once, _pthread_once_win32_cb, cb, NULL);
++            if (rc == 0)
++                return -1;
++            else
++                return 0;
++        }
++    }
++
++    // Simulate 'InitOnceExecuteOnce' with a mutex which name is hard to predict
++    char szName[128];
++    sprintf(szName, "%04d%s%08x", GetCurrentProcessId(), g_szCryptoInit_CompileTime, &once->once);
++    szName[sizeof(szName) - 1] = 0;
++
++    for (int i = 0; i < strlen(szName); ++i)
++    {
++        if (szName[i] == ':')
++        {
++            szName[i] = '0';
++        }
++    }
++
++    HANDLE hMutex = CreateMutexA(NULL, TRUE, szName);
++    if (hMutex == NULL)
++    {
++        return -1;
++    }
++
++    const DWORD dwLastError = GetLastError();
++    if(dwLastError != ERROR_SUCCESS)
++    {
++        if (dwLastError == ERROR_ALREADY_EXISTS)
++        {
++            if (WaitForSingleObject(hMutex, INFINITE) != WAIT_OBJECT_0)
++            {
++                return -1;
++            }
++
++            ReleaseMutex(hMutex);
++            return 0;
++        }
++
++        return -1;
++    }
++
++    _pthread_once_win32_cb(once, cb, NULL);
++    ReleaseMutex(hMutex);
++    return 0;
+ }
+ 
+ typedef DWORD pthread_t;

@@ -1,0 +1,7 @@
+--- "a/crypto/crypto.sym"	2019-04-13 19:21:31.000000000 +0200
++++ "b/crypto/crypto.sym"	2020-09-15 17:17:09.539144900 +0200
+@@ -3650,3 +3650,4 @@
+ v2i_GENERAL_NAME
+ v2i_GENERAL_NAMES
+ v2i_GENERAL_NAME_ex
++g_szCryptoInit_CompileTime
