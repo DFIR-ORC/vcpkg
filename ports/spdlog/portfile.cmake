@@ -11,6 +11,8 @@ vcpkg_check_features(OUT_FEATURE_OPTIONS FEATURE_OPTIONS
 	benchmark SPDLOG_BUILD_BENCH
 )
 
+file(COPY ${CMAKE_CURRENT_LIST_DIR}/tweakme.h DESTINATION ${SOURCE_PATH}/include/spdlog)
+
 vcpkg_configure_cmake(
     SOURCE_PATH ${SOURCE_PATH}
     PREFER_NINJA
