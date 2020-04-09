@@ -36,7 +36,7 @@ index 8b8c3c6..b387e62 100644
 +
 +extern const char* g_szCryptoInit_CompileTime;
 +
-+typedef BOOL (*FnInitOnceExecuteOnce)(PINIT_ONCE InitOnce, PINIT_ONCE_FN InitFn, PVOID Context, LPVOID* Parameter);
++typedef BOOL (WINAPI* FnInitOnceExecuteOnce)(PINIT_ONCE InitOnce, PINIT_ONCE_FN InitFn, PVOID Context, LPVOID* Parameter);
 +
 +static inline int pthread_once(pthread_once_t* once, void (*cb)(void))
  {
