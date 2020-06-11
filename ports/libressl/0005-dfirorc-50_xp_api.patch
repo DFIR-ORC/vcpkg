@@ -12,28 +12,15 @@ index 67e7920..8cf09f8 100644
  OPENSSL_init_crypto(uint64_t opts, const void *settings)
  {
 diff --git a/include/compat/pthread.h b/include/compat/pthread.h
-index 8b8c3c6..b387e62 100644
+index 8b8c3c6..24f2c15 100644
 --- a/include/compat/pthread.h
 +++ b/include/compat/pthread.h
-@@ -31,16 +31,83 @@ _pthread_once_win32_cb(PINIT_ONCE once, PVOID param, PVOID *context)
+@@ -31,14 +31,67 @@ _pthread_once_win32_cb(PINIT_ONCE once, PVOID param, PVOID *context)
  	return TRUE;
  }
  
 -static inline int
 -pthread_once(pthread_once_t *once, void (*cb) (void))
-+#ifdef _WIN64
-+
-+static inline int pthread_once(pthread_once_t* once, void (*cb)(void))
-+{
-+    BOOL rc = InitOnceExecuteOnce(&once->once, _pthread_once_win32_cb, cb, NULL);
-+    if (rc == 0)
-+        return -1;
-+    else
-+        return 0;
-+}
-+
-+#else
-+
 +extern const char* g_szCryptoInit_CompileTime;
 +
 +typedef BOOL (WINAPI* FnInitOnceExecuteOnce)(PINIT_ONCE InitOnce, PINIT_ONCE_FN InitFn, PVOID Context, LPVOID* Parameter);
@@ -102,7 +89,4 @@ index 8b8c3c6..b387e62 100644
 +    return 0;
  }
  
-+#endif
  typedef DWORD pthread_t;
- 
- static inline pthread_t
