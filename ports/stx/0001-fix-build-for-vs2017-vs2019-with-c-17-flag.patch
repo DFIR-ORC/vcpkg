@@ -1,0 +1,33 @@
+From ec71d46fc4b575ed790fb85e5764c6baa2d10dd3 Mon Sep 17 00:00:00 2001
+From: fabienfl-orc <fabien.fl-orc@ssi.gouv.fr>
+Date: Thu, 2 Jul 2020 16:52:31 +0200
+Subject: [PATCH] fix build for vs2017/vs2019 with c++17 flag
+
+---
+ include/stx/config.h | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/include/stx/config.h b/include/stx/config.h
+index db3832c..832e65c 100644
+--- a/include/stx/config.h
++++ b/include/stx/config.h
+@@ -257,6 +257,7 @@
+ #endif
+ 
+ /*********************** ATTRIBUTE REQUIREMENTS ***********************/
++#if defined(__has_cpp_attribute)
+ 
+ #if !__has_cpp_attribute(nodiscard)
+ #error C++ attribute `nodiscard` is not available on this compiler. Important unused function results will not raise a warning. Please upgrade to a newer version.
+@@ -270,6 +271,8 @@
+ #error C++ function attribute `noreturn` is not available on this compiler. Please upgrade to a newer version.
+ #endif
+ 
++#endif
++
+ /*********************** SHARED LIBRARY SUPPORT ***********************/
+ 
+ #if CFG(OS, WINDOWS) || CFG(OS, CYGWIN)
+-- 
+2.25.0.windows.2
+

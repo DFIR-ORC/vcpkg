@@ -8,6 +8,7 @@ vcpkg_from_github(
     HEAD_REF master
     PATCHES
         "CMakeLists.patch"
+        "0001-fix-build-for-vs2017-vs2019-with-c-17-flag.patch"
 )
 
 vcpkg_check_features(OUT_FEATURE_OPTIONS FEATURE_OPTIONS
