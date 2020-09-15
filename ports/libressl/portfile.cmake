@@ -35,6 +35,7 @@ vcpkg_extract_source_archive_ex(
         0003-dfirorc-fix_output_name.patch
         0004-dfirorc-timegm_conflict.patch
         0005-dfirorc-50_xp_api.patch
+        0006-dfirorc-50_xp_api_shared_crt.patch
 )
 
 set(LIBRESSL_APPS OFF)
