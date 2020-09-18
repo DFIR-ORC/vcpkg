@@ -28,7 +28,7 @@
       "platform": "!(windows & static)"
     },
     {
-      "name": "openssl",
+      "name": "libressl",
       "platform": "!(windows & static)"
     },
     {
