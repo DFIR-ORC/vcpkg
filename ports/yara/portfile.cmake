@@ -3,8 +3,8 @@ vcpkg_check_linkage(ONLY_STATIC_LIBRARY)
 vcpkg_from_github(
   OUT_SOURCE_PATH SOURCE_PATH
   REPO VirusTotal/yara
-  REF v4.0.2
-  SHA512 22575cb7b48eead3b5051ce13beb3deef88a1b605de20ec8e5fc2651c0dd0009eb6c0ecddb8600a43a757ceb6ea298e94f71a26d2f9acb31a73830e18c81d10c
+  REF v3.11.0
+  SHA512 26d800284a2de07195e4a480eb7125b1f5ad0265b284bfbeee10dbab162ea0f419c9e2ea5c4ed5fa25a46a2c9e3c6b077dfe1cafece79251e20d5d70f91b80a8
   HEAD_REF dev
 )
 
