@@ -4,7 +4,9 @@ vcpkg_from_github(
     REF cbe9448650176797739dbab13961ef4c07f4290f # v1.8.1
     SHA512 a4719fe9083c662603b4819a58c5df8558262192f16a7d4b678ed761b042660727e0f614d106125b3756da3a01d56370bb46789d4b03bb468a170ad7b90172f3
     HEAD_REF v1.x
-    PATCHES fix-featurebuild.patch
+    PATCHES
+        fix-featurebuild.patch
+        0001-Perfect-forwarding-for-arguments.patch
 )
 
 vcpkg_check_features(OUT_FEATURE_OPTIONS FEATURE_OPTIONS

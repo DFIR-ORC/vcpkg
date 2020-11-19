@@ -1,0 +1,214 @@
+From d0228c12cd330e386f2c1da4d322abaf9c5bc754 Mon Sep 17 00:00:00 2001
+From: dkavolis <12998363+dkavolis@users.noreply.github.com>
+Date: Mon, 2 Nov 2020 00:37:03 +0000
+Subject: [PATCH] Perfect forwarding for arguments
+
+
+diff --git a/include/spdlog/logger.h b/include/spdlog/logger.h
+index 7c5ba135..a34c5221 100644
+--- a/include/spdlog/logger.h
++++ b/include/spdlog/logger.h
+@@ -75,58 +75,58 @@ public:
+ 
+     // FormatString is a type derived from fmt::compile_string
+     template<typename FormatString, typename std::enable_if<fmt::is_compile_string<FormatString>::value, int>::type = 0, typename... Args>
+-    void log(source_loc loc, level::level_enum lvl, const FormatString &fmt, const Args &...args)
++    void log(source_loc loc, level::level_enum lvl, const FormatString &fmt, Args&&...args)
+     {
+-        log_(loc, lvl, fmt, args...);
++        log_(loc, lvl, fmt, std::forward<Args>(args)...);
+     }
+ 
+     // FormatString is NOT a type derived from fmt::compile_string but is a string_view_t or can be implicitly converted to one
+     template<typename... Args>
+-    void log(source_loc loc, level::level_enum lvl, string_view_t fmt, const Args &...args)
++    void log(source_loc loc, level::level_enum lvl, string_view_t fmt, Args&&...args)
+     {
+-        log_(loc, lvl, fmt, args...);
++        log_(loc, lvl, fmt, std::forward<Args>(args)...);
+     }
+ 
+     template<typename FormatString, typename... Args>
+-    void log(level::level_enum lvl, const FormatString &fmt, const Args &...args)
++    void log(level::level_enum lvl, const FormatString &fmt, Args&&...args)
+     {
+-        log(source_loc{}, lvl, fmt, args...);
++        log(source_loc{}, lvl, fmt, std::forward<Args>(args)...);
+     }
+ 
+     template<typename FormatString, typename... Args>
+-    void trace(const FormatString &fmt, const Args &...args)
++    void trace(const FormatString &fmt, Args&&...args)
+     {
+-        log(level::trace, fmt, args...);
++        log(level::trace, fmt, std::forward<Args>(args)...);
+     }
+ 
+     template<typename FormatString, typename... Args>
+-    void debug(const FormatString &fmt, const Args &...args)
++    void debug(const FormatString &fmt, Args&&...args)
+     {
+-        log(level::debug, fmt, args...);
++        log(level::debug, fmt, std::forward<Args>(args)...);
+     }
+ 
+     template<typename FormatString, typename... Args>
+-    void info(const FormatString &fmt, const Args &...args)
++    void info(const FormatString &fmt, Args&&...args)
+     {
+-        log(level::info, fmt, args...);
++        log(level::info, fmt, std::forward<Args>(args)...);
+     }
+ 
+     template<typename FormatString, typename... Args>
+-    void warn(const FormatString &fmt, const Args &...args)
++    void warn(const FormatString &fmt, Args&&...args)
+     {
+-        log(level::warn, fmt, args...);
++        log(level::warn, fmt, std::forward<Args>(args)...);
+     }
+ 
+     template<typename FormatString, typename... Args>
+-    void error(const FormatString &fmt, const Args &...args)
++    void error(const FormatString &fmt, Args&&...args)
+     {
+-        log(level::err, fmt, args...);
++        log(level::err, fmt, std::forward<Args>(args)...);
+     }
+ 
+     template<typename FormatString, typename... Args>
+-    void critical(const FormatString &fmt, const Args &...args)
++    void critical(const FormatString &fmt, Args&&...args)
+     {
+-        log(level::critical, fmt, args...);
++        log(level::critical, fmt, std::forward<Args>(args)...);
+     }
+ 
+     template<typename T>
+@@ -225,7 +225,7 @@ public:
+ #else
+ 
+     template<typename... Args>
+-    void log(source_loc loc, level::level_enum lvl, wstring_view_t fmt, const Args &...args)
++    void log(source_loc loc, level::level_enum lvl, wstring_view_t fmt, Args&&...args)
+     {
+         bool log_enabled = should_log(lvl);
+         bool traceback_enabled = tracer_.enabled();
+@@ -237,7 +237,7 @@ public:
+         {
+             // format to wmemory_buffer and convert to utf8
+             fmt::wmemory_buffer wbuf;
+-            fmt::format_to(wbuf, fmt, args...);
++            fmt::format_to(wbuf, fmt, std::forward<Args>(args)...);
+ 
+             memory_buf_t buf;
+             details::os::wstr_to_utf8buf(wstring_view_t(wbuf.data(), wbuf.size()), buf);
+@@ -326,7 +326,7 @@ protected:
+ 
+     // common implementation for after templated public api has been resolved
+     template<typename FormatString, typename... Args>
+-    void log_(source_loc loc, level::level_enum lvl, const FormatString &fmt, const Args &...args)
++    void log_(source_loc loc, level::level_enum lvl, const FormatString &fmt, Args&&...args)
+     {
+         bool log_enabled = should_log(lvl);
+         bool traceback_enabled = tracer_.enabled();
+@@ -337,7 +337,7 @@ protected:
+         SPDLOG_TRY
+         {
+             memory_buf_t buf;
+-            fmt::format_to(buf, fmt, args...);
++            fmt::format_to(buf, fmt, std::forward<Args>(args)...);
+             details::log_msg log_msg(loc, name_, lvl, string_view_t(buf.data(), buf.size()));
+             log_it_(log_msg, log_enabled, traceback_enabled);
+         }
+diff --git a/include/spdlog/pattern_formatter.h b/include/spdlog/pattern_formatter.h
+index 3ce858fa..bc13ae10 100644
+--- a/include/spdlog/pattern_formatter.h
++++ b/include/spdlog/pattern_formatter.h
+@@ -92,9 +92,9 @@ public:
+     void format(const details::log_msg &msg, memory_buf_t &dest) override;
+ 
+     template<typename T, typename... Args>
+-    pattern_formatter &add_flag(char flag, const Args &...args)
++    pattern_formatter &add_flag(char flag, Args&&...args)
+     {
+-        custom_handlers_[flag] = details::make_unique<T>(args...);
++        custom_handlers_[flag] = details::make_unique<T>(std::forward<Args>(args)...);
+         return *this;
+     }
+     void set_pattern(std::string pattern);
+diff --git a/include/spdlog/spdlog.h b/include/spdlog/spdlog.h
+index bac5d26f..87364778 100644
+--- a/include/spdlog/spdlog.h
++++ b/include/spdlog/spdlog.h
+@@ -128,51 +128,51 @@ SPDLOG_API spdlog::logger *default_logger_raw();
+ SPDLOG_API void set_default_logger(std::shared_ptr<spdlog::logger> default_logger);
+ 
+ template<typename FormatString, typename... Args>
+-inline void log(source_loc source, level::level_enum lvl, const FormatString &fmt, const Args &...args)
++inline void log(source_loc source, level::level_enum lvl, const FormatString &fmt, Args&&...args)
+ {
+-    default_logger_raw()->log(source, lvl, fmt, args...);
++    default_logger_raw()->log(source, lvl, fmt, std::forward<Args>(args)...);
+ }
+ 
+ template<typename FormatString, typename... Args>
+-inline void log(level::level_enum lvl, const FormatString &fmt, const Args &...args)
++inline void log(level::level_enum lvl, const FormatString &fmt, Args&&...args)
+ {
+-    default_logger_raw()->log(source_loc{}, lvl, fmt, args...);
++    default_logger_raw()->log(source_loc{}, lvl, fmt, std::forward<Args>(args)...);
+ }
+ 
+ template<typename FormatString, typename... Args>
+-inline void trace(const FormatString &fmt, const Args &...args)
++inline void trace(const FormatString &fmt, Args&&...args)
+ {
+-    default_logger_raw()->trace(fmt, args...);
++    default_logger_raw()->trace(fmt, std::forward<Args>(args)...);
+ }
+ 
+ template<typename FormatString, typename... Args>
+-inline void debug(const FormatString &fmt, const Args &...args)
++inline void debug(const FormatString &fmt, Args&&...args)
+ {
+-    default_logger_raw()->debug(fmt, args...);
++    default_logger_raw()->debug(fmt, std::forward<Args>(args)...);
+ }
+ 
+ template<typename FormatString, typename... Args>
+-inline void info(const FormatString &fmt, const Args &...args)
++inline void info(const FormatString &fmt, Args&&...args)
+ {
+-    default_logger_raw()->info(fmt, args...);
++    default_logger_raw()->info(fmt, std::forward<Args>(args)...);
+ }
+ 
+ template<typename FormatString, typename... Args>
+-inline void warn(const FormatString &fmt, const Args &...args)
++inline void warn(const FormatString &fmt, Args&&...args)
+ {
+-    default_logger_raw()->warn(fmt, args...);
++    default_logger_raw()->warn(fmt, std::forward<Args>(args)...);
+ }
+ 
+ template<typename FormatString, typename... Args>
+-inline void error(const FormatString &fmt, const Args &...args)
++inline void error(const FormatString &fmt, Args&&...args)
+ {
+-    default_logger_raw()->error(fmt, args...);
++    default_logger_raw()->error(fmt, std::forward<Args>(args)...);
+ }
+ 
+ template<typename FormatString, typename... Args>
+-inline void critical(const FormatString &fmt, const Args &...args)
++inline void critical(const FormatString &fmt, Args&&...args)
+ {
+-    default_logger_raw()->critical(fmt, args...);
++    default_logger_raw()->critical(fmt, std::forward<Args>(args)...);
+ }
+ 
+ template<typename T>
+-- 
+2.25.0.windows.2
+
