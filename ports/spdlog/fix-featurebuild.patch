@@ -4,11 +4,11 @@ index 3a7663b..3e554d6 100644
 +++ b/CMakeLists.txt
 @@ -171,7 +171,7 @@ target_link_libraries(spdlog_header_only INTERFACE Threads::Threads)
  # ---------------------------------------------------------------------------------------
- if (SPDLOG_FMT_EXTERNAL OR SPDLOG_FMT_EXTERNAL_HO)
-     if (NOT TARGET fmt::fmt)
+ if(SPDLOG_FMT_EXTERNAL OR SPDLOG_FMT_EXTERNAL_HO)
+     if(NOT TARGET fmt::fmt)
 -        find_package(fmt 5.3.0 REQUIRED)
 +        find_package(fmt CONFIG REQUIRED)
-     endif ()
+     endif()
      target_compile_definitions(spdlog PUBLIC SPDLOG_FMT_EXTERNAL)
      target_compile_definitions(spdlog_header_only INTERFACE SPDLOG_FMT_EXTERNAL)
 diff --git a/bench/async_bench.cpp b/bench/async_bench.cpp
