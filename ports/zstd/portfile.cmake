@@ -15,7 +15,7 @@ string(COMPARE EQUAL "${VCPKG_LIBRARY_LINKAGE}" "dynamic" ZSTD_BUILD_SHARED)
 if(VCPKG_TARGET_IS_WINDOWS)
     # Enable multithreaded mode. CMake build doesn't provide a multithreaded
     # library target, but it is the default in Makefile and VS projects.
-    set(VCPKG_C_FLAGS "${VCPKG_C_FLAGS} -DZSTD_MULTITHREAD")
+    set(VCPKG_C_FLAGS "${VCPKG_C_FLAGS}")
     set(VCPKG_CXX_FLAGS "${VCPKG_CXX_FLAGS}")
 endif()
 
@@ -28,6 +28,7 @@ vcpkg_cmake_configure(
         -DZSTD_BUILD_PROGRAMS=0
         -DZSTD_BUILD_TESTS=0
         -DZSTD_BUILD_CONTRIB=0
+        -DZSTD_MULTITHREAD_SUPPORT=0
     OPTIONS_DEBUG
         -DCMAKE_DEBUG_POSTFIX=d) # this is against the maintainer guidelines. 
         # Removing it probably requires a vcpkg-cmake-wrapper.cmake to correct downstreams FindZSTD.cmake
