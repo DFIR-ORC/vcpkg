@@ -8,6 +8,7 @@ vcpkg_from_github(
         enable-uwp-builds.patch
         fix_config_include.patch
         win_output_name.patch # Fix output name on Windows. Autotool build does not generate lib prefixed libraries on windows. 
+        xp.patch
 )
 
 vcpkg_configure_cmake(
