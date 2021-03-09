@@ -5,11 +5,6 @@ if(MSVC)
   add_compile_options(/W3 /wd4005 /wd4996 /wd4018 -D_CRT_SECURE_NO_WARNINGS)
 endif()
 
-
-find_path(JANSSON_INCLUDE_DIR NAMES jansson.h)
-find_library(JANSSON_LIBRARY NAMES jansson)
-
-
 include_directories(
   .
   libyara
@@ -50,7 +45,6 @@ set(
   libyara/libyara.c
   libyara/mem.c
   libyara/modules.c
-  libyara/modules/cuckoo.c
   libyara/modules/dotnet.c
   libyara/modules/elf.c
   libyara/modules/hash.c
@@ -109,7 +103,6 @@ set(
   libyara_definitions
   -DHAVE_WINCRYPT_H
   -D${PROC_PLATFORM_INTERFACE}
-  -DCUCKOO_MODULE
   -DHASH_MODULE
   -DDOTNET_MODULE
 )
