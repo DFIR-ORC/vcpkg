@@ -6,6 +6,7 @@ vcpkg_from_github(
   REF v4.0.2
   SHA512 22575cb7b48eead3b5051ce13beb3deef88a1b605de20ec8e5fc2651c0dd0009eb6c0ecddb8600a43a757ceb6ea298e94f71a26d2f9acb31a73830e18c81d10c
   HEAD_REF dev
+  PATCHES xp_sp2_target.patch
 )
 
 file(COPY ${CMAKE_CURRENT_LIST_DIR}/CMakeLists.txt DESTINATION ${SOURCE_PATH})
