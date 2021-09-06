@@ -63,6 +63,11 @@ vcpkg_replace_string(${CURRENT_PACKAGES_DIR}/include/spdlog/fmt/chrono.h
     "#if 0 // !defined(SPDLOG_FMT_EXTERNAL)"
 )
 
+vcpkg_replace_string(${CURRENT_PACKAGES_DIR}/include/spdlog/fmt/xchar.h
+    "#if !defined(SPDLOG_FMT_EXTERNAL)"
+    "#if 0 // !defined(SPDLOG_FMT_EXTERNAL)"
+)
+
 file(REMOVE_RECURSE ${CURRENT_PACKAGES_DIR}/debug/include
                     ${CURRENT_PACKAGES_DIR}/debug/share)
 
