@@ -1,5 +1,8 @@
 vcpkg_fail_port_install(ON_ARCH "x86" "arm" "arm64")
 
+# DFIR-Orc: Arrow does not build with WINNT 0x0501. At least because of 'SHGetKnownFolderPath'.
+# It is called for download/extract timezone db into user's download directory and a workaround should be possible.
+
 vcpkg_from_github(
     OUT_SOURCE_PATH SOURCE_PATH
     REPO apache/arrow
@@ -8,6 +11,7 @@ vcpkg_from_github(
     HEAD_REF master
     PATCHES
         all.patch
+        keep_original_winnt.patch
 )
 
 string(COMPARE EQUAL ${VCPKG_LIBRARY_LINKAGE} "dynamic" ARROW_BUILD_SHARED)
