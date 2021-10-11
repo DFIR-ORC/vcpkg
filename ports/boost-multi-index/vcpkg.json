@@ -18,7 +18,6 @@
     "boost-move",
     "boost-mpl",
     "boost-preprocessor",
-    "boost-serialization",
     "boost-static-assert",
     "boost-throw-exception",
     "boost-tuple",
