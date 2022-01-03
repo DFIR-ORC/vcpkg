@@ -6,7 +6,6 @@ if(MSVC)
 endif()
 
 
-find_package(OpenSSL REQUIRED)
 find_path(JANSSON_INCLUDE_DIR NAMES jansson.h)
 find_library(JANSSON_LIBRARY NAMES jansson)
 
@@ -100,8 +99,6 @@ find_package(Threads REQUIRED)
 
 set(
   libyara_dependencies 
-  OpenSSL::SSL
-  OpenSSL::Crypto 
   Threads::Threads
   ${JANSSON_LIBRARY}
 )
@@ -115,7 +112,7 @@ endif()
 
 set(
   libyara_definitions
-  -DHAVE_LIBCRYPTO
+  -DHAVE_WINCRYPT_H
   -D${PROC_PLATFORM_INTERFACE}
   -DCUCKOO_MODULE
   -DHASH_MODULE
@@ -129,6 +126,8 @@ target_compile_definitions(libyara PRIVATE ${libyara_definitions})
 
 add_executable(yara  ${yara_sources})
 add_executable(yarac  ${yarac_sources})
+
+target_include_directories(libyara PUBLIC ${JANSSON_INCLUDE_DIR})
 
 target_link_libraries(yarac PRIVATE libyara ${libyara_dependencies})
 target_link_libraries(yara PRIVATE libyara ${libyara_dependencies})
