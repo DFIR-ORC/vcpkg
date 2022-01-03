@@ -11,7 +11,7 @@
     "boost-scope-exit",
     "boost-smart-ptr",
     "libevent",
-    "openssl",
+    "libressl",
     "zlib"
   ]
 }
