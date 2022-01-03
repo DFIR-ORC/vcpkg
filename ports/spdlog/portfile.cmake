@@ -4,7 +4,9 @@ vcpkg_from_github(
     REF v1.9.2
     SHA512 87b12a792cf2d740ef29db4b6055788a487b6d474662b878711b8a5534efea5f0d97b6ac357834500b66cc65e1ba8934446a695e9691fd5d4b95397b6871555c
     HEAD_REF v1.x
-    PATCHES fix-mingw-build.patch
+    PATCHES
+      fix-mingw-build.patch
+      tweakme.patch
 )
 
 vcpkg_check_features(OUT_FEATURE_OPTIONS FEATURE_OPTIONS
