@@ -15,7 +15,6 @@
     "boost-move",
     "boost-mpl",
     "boost-preprocessor",
-    "boost-serialization",
     "boost-smart-ptr",
     "boost-static-assert",
     "boost-throw-exception",
