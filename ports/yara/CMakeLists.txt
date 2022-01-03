@@ -6,10 +6,6 @@ if(MSVC)
 endif()
 
 
-find_path(JANSSON_INCLUDE_DIR NAMES jansson.h)
-find_library(JANSSON_LIBRARY NAMES jansson)
-
-
 include_directories(
   .
   libyara
@@ -52,7 +48,6 @@ set(
   libyara/mem.c
   libyara/modules.c
   libyara/modules/console/console.c
-  libyara/modules/cuckoo/cuckoo.c
   libyara/modules/dotnet/dotnet.c
   libyara/modules/elf/elf.c
   libyara/modules/hash/hash.c
@@ -100,7 +95,6 @@ find_package(Threads REQUIRED)
 set(
   libyara_dependencies 
   Threads::Threads
-  ${JANSSON_LIBRARY}
 )
 
 IF(CMAKE_SYSTEM_NAME MATCHES "Windows")
@@ -114,7 +108,6 @@ set(
   libyara_definitions
   -DHAVE_WINCRYPT_H
   -D${PROC_PLATFORM_INTERFACE}
-  -DCUCKOO_MODULE
   -DHASH_MODULE
   -DDOTNET_MODULE
 )
@@ -126,8 +119,6 @@ target_compile_definitions(libyara PRIVATE ${libyara_definitions})
 
 add_executable(yara  ${yara_sources})
 add_executable(yarac  ${yarac_sources})
-
-target_include_directories(libyara PUBLIC ${JANSSON_INCLUDE_DIR})
 
 target_link_libraries(yarac PRIVATE libyara ${libyara_dependencies})
 target_link_libraries(yara PRIVATE libyara ${libyara_dependencies})

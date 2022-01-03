@@ -2,9 +2,5 @@
   "name": "yara",
   "version": "4.2.0",
   "description": "The pattern matching swiss knife",
-  "homepage": "https://github.com/VirusTotal/yara",
-  "license": "BSD-3-Clause",
-  "dependencies": [
-    "jansson"
-  ]
+  "homepage": "https://github.com/VirusTotal/yara"
 }
