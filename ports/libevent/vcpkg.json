@@ -20,7 +20,7 @@
   ],
   "features": {
     "openssl": {
-      "description": "Support for openssl",
+      "description": "Support for libressl",
       "dependencies": [
         {
           "name": "libevent",
@@ -28,7 +28,7 @@
             "thread"
           ]
         },
-        "openssl"
+        "libressl"
       ]
     },
     "thread": {
