@@ -9,6 +9,7 @@ vcpkg_from_github(
         fix_config_include.patch
         win_output_name.patch # Fix output name on Windows. Autotool build does not generate lib prefixed libraries on windows. 
         add_support_ios.patch # add install bundle info for support ios 
+        xp.patch
 )
 
 vcpkg_cmake_configure(
