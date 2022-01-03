@@ -9,6 +9,7 @@ vcpkg_from_github(
   PATCHES
     # Module elf request new library tlshc(https://github.com/avast/tlshc), the related upstream PR: https://github.com/VirusTotal/yara/pull/1624.
     Disable-module-elf.patch
+    xp_sp2_target.patch
 )
 
 vcpkg_check_features(OUT_FEATURE_OPTIONS FEATURE_OPTIONS
