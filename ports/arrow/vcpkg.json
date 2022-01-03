@@ -14,7 +14,7 @@
     "gflags",
     "glog",
     "lz4",
-    "openssl",
+    "libressl",
     "re2",
     "snappy",
     "thrift",
