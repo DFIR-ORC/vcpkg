@@ -42,7 +42,7 @@ vcpkg_cmake_configure(
 
 vcpkg_cmake_install()
 vcpkg_cmake_config_fixup(CONFIG_PATH lib/cmake/spdlog)
-vcpkg_fixup_pkgconfig()
+#vcpkg_fixup_pkgconfig()  # do not pull pkg-config and msys2 libraries like libwinpthread
 vcpkg_copy_pdbs()
 
 # use vcpkg-provided fmt library (see also option SPDLOG_FMT_EXTERNAL above)
