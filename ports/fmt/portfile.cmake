@@ -42,7 +42,7 @@ endif()
 file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/debug/include")
 
 vcpkg_cmake_config_fixup()
-vcpkg_fixup_pkgconfig()
+#vcpkg_fixup_pkgconfig()  # do not pull pkg-config and msys2 libraries like libwinpthread
 
 if(VCPKG_TARGET_IS_WINDOWS)
     if(NOT DEFINED VCPKG_BUILD_TYPE OR VCPKG_BUILD_TYPE STREQUAL "debug")
