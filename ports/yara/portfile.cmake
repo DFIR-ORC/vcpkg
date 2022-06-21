@@ -10,14 +10,14 @@ vcpkg_from_github(
 
 file(COPY "${CMAKE_CURRENT_LIST_DIR}/CMakeLists.txt" DESTINATION "${SOURCE_PATH}")
 
-vcpkg_cmake_configure(
+vcpkg_configure_cmake(
   SOURCE_PATH "${SOURCE_PATH}"
   OPTIONS_DEBUG 
       -DDISABLE_INSTALL_HEADERS=ON 
       -DDISABLE_INSTALL_TOOLS=ON
 )
 
-vcpkg_cmake_install()
+vcpkg_install_cmake()
 
 # Handle copyright
 file(INSTALL "${SOURCE_PATH}/COPYING" DESTINATION "${CURRENT_PACKAGES_DIR}/share/${PORT}" RENAME copyright)
