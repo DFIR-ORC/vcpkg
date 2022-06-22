@@ -153,6 +153,8 @@ function(z_vcpkg_fixup_pkgconfig_check_files arg_file arg_config)
 endfunction()
 
 function(vcpkg_fixup_pkgconfig)
+    return()
+
     cmake_parse_arguments(PARSE_ARGV 0 arg 
         "SKIP_CHECK"
         ""
