@@ -312,6 +312,7 @@ target_compile_definitions(7zip
         -D_7ZIP_LARGE_PAGES
         -DUNICODE
         -D_UNICODE
+	  -D_7ZIP_ST
 )
 
 if(NOT BUILD_SHARED_LIBS)
