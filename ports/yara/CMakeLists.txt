@@ -47,6 +47,7 @@ set(
   libyara/libyara.c
   libyara/mem.c
   libyara/modules.c
+  libyara/modules/console/console.c
   libyara/modules/dotnet/dotnet.c
   libyara/modules/elf/elf.c
   libyara/modules/hash/hash.c
@@ -78,20 +79,18 @@ set(
 set(
   yara_sources
   cli/args.c
+  cli/common.c
   cli/threading.c
   cli/yara.c
 )
 set( yarac_sources
   cli/args.c
+  cli/common.c
   cli/yarac.c
 )
 
-
-find_package(Threads REQUIRED)
-
 set(
   libyara_dependencies 
-  Threads::Threads
 )
 
 IF(CMAKE_SYSTEM_NAME MATCHES "Windows")
