@@ -30,3 +30,9 @@ file(
 )
 
 file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/debug/include")
+file(
+    COPY
+        ${CMAKE_CURRENT_LIST_DIR}/guids.h
+    DESTINATION ${CURRENT_PACKAGES_DIR}/include/7zip
+)
+
