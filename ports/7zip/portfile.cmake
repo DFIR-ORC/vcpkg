@@ -9,6 +9,8 @@ vcpkg_extract_source_archive(
     SOURCE_PATH
     ARCHIVE "${ARCHIVE}"
     NO_REMOVE_ONE_LEVEL
+    PATCHES
+        add-functions-and-fixes-for-static-link.patch
 )
 
 file(COPY "${CMAKE_CURRENT_LIST_DIR}/CMakeLists.txt" DESTINATION "${SOURCE_PATH}")
@@ -33,6 +35,7 @@ file(
 file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/debug/include")
 file(
     COPY
+        ${CMAKE_CURRENT_LIST_DIR}/7zip.h
         ${CMAKE_CURRENT_LIST_DIR}/guids.h
     DESTINATION ${CURRENT_PACKAGES_DIR}/include/7zip
 )

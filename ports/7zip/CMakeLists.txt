@@ -398,6 +398,10 @@ target_include_directories(7zip
         $<INSTALL_INTERFACE:include>/7zip/CPP
 )
 
+if(NOT BUILD_SHARED_LIBS)
+    target_compile_definitions(7zip PUBLIC -D_7ZIP_STATIC)
+endif()
+
 install(
     TARGETS 7zip
     EXPORT 7zip-targets
