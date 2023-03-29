@@ -33,7 +33,7 @@
       "platform": "!osx & !windows"
     },
     {
-      "name": "openssl",
+      "name": "libressl",
       "platform": "!(windows & static)"
     },
     {
