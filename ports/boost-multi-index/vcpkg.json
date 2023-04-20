@@ -52,10 +52,6 @@
       "version>=": "1.81.0#2"
     },
     {
-      "name": "boost-serialization",
-      "version>=": "1.81.0#2"
-    },
-    {
       "name": "boost-smart-ptr",
       "version>=": "1.81.0#2"
     },
