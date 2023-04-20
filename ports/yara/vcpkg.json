@@ -6,7 +6,7 @@
   "homepage": "https://github.com/VirusTotal/yara",
   "license": "BSD-3-Clause",
   "dependencies": [
-    "openssl",
+    "libressl",
     {
       "name": "vcpkg-cmake",
       "host": true

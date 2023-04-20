@@ -119,7 +119,7 @@ endif()
 
 set(
   libyara_definitions
-  -DHAVE_LIBCRYPTO
+  -DHAVE_WINCRYPT_H
   -D${PROC_PLATFORM_INTERFACE}
   -DHASH_MODULE
 )
