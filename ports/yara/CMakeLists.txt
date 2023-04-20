@@ -74,6 +74,7 @@ set(
   libyara/rules.c
   libyara/scan.c
   libyara/scanner.c
+  libyara/simple_str.c
   libyara/sizedstr.c
   libyara/stack.c
   libyara/stopwatch.c
