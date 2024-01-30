@@ -112,7 +112,7 @@ set(
 )
 
 if(CMAKE_SYSTEM_NAME MATCHES "Windows")
-list(APPEND libyara_dependencies Crypt32.lib Ws2_32.lib)
+list(APPEND libyara_dependencies Crypt32.lib Ws2_32.lib bcrypt.lib)
 endif()
 if("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
   list(APPEND libyara_dependencies m)
@@ -120,7 +120,7 @@ endif()
 
 set(
   libyara_definitions
-  -DHAVE_WINCRYPT_H
+  -DHAVE_LIBCRYPTO
   -D${PROC_PLATFORM_INTERFACE}
   -DHASH_MODULE
 )
