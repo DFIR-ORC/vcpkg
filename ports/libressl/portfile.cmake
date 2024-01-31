@@ -22,7 +22,10 @@ vcpkg_extract_source_archive(
         0004-dfirorc-timegm_conflict.patch
         0005-dfirorc-50_xp_api.patch
         0006-dfirorc-50_xp_api_shared_crt.patch
+        0007-dfirorc-xp_inet_pton.patch
 )
+
+file(COPY ${CMAKE_CURRENT_LIST_DIR}/inet_pton.c DESTINATION "${SOURCE_PATH}/crypto/compat/")
 
 vcpkg_check_features(OUT_FEATURE_OPTIONS FEATURE_OPTIONS
     FEATURES
@@ -60,7 +63,10 @@ file(REMOVE_RECURSE
 
 vcpkg_copy_pdbs()
 
-vcpkg_install_copyright(FILE_LIST "${SOURCE_PATH}/COPYING")
+vcpkg_install_copyright(FILE_LIST
+    "${SOURCE_PATH}/COPYING"
+    "${CMAKE_CURRENT_LIST_DIR}/inet_pton.COPYING"
+)
 
 if(VCPKG_TARGET_IS_WINDOWS OR VCPKG_TARGET_IS_UWP)
     file(GLOB_RECURSE LIBS "${CURRENT_PACKAGES_DIR}/*.lib")
