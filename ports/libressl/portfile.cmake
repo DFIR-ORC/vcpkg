@@ -23,9 +23,11 @@ vcpkg_extract_source_archive(
         0005-dfirorc-50_xp_api.patch
         0006-dfirorc-50_xp_api_shared_crt.patch
         0007-dfirorc-xp_inet_pton.patch
+        0008-dfirorc-xp_bcrypt_gen_random.patch
 )
 
 file(COPY ${CMAKE_CURRENT_LIST_DIR}/inet_pton.c DESTINATION "${SOURCE_PATH}/crypto/compat/")
+file(COPY ${CMAKE_CURRENT_LIST_DIR}/bcrypt_gen_random.c DESTINATION "${SOURCE_PATH}/crypto/compat/")
 
 vcpkg_check_features(OUT_FEATURE_OPTIONS FEATURE_OPTIONS
     FEATURES
