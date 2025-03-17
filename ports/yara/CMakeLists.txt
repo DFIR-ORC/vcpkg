@@ -51,10 +51,7 @@ set(
   libyara/modules.c
   libyara/modules/console/console.c
   libyara/modules/hash/hash.c
-  libyara/modules/lnk/lnk.c
-  libyara/modules/lnk/lnk_utils.c
   libyara/modules/math/math.c
-  libyara/modules/macho/macho.c
   libyara/modules/pe/pe.c
   libyara/modules/pe/pe_utils.c
   libyara/modules/pe/authenticode-parser/authenticode.c
