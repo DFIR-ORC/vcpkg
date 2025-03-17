@@ -1,0 +1,17 @@
+diff --git a/include/openssl/opensslfeatures.h b/include/openssl/opensslfeatures.h
+index 43dc738..05a9fbe 100644
+--- a/include/openssl/opensslfeatures.h
++++ b/include/openssl/opensslfeatures.h
+@@ -15,6 +15,12 @@
+ #define __attribute__(a)
+ #endif
+ 
++#ifndef _SSIZE_T_DEFINED
++#define _SSIZE_T_DEFINED
++#include <BaseTsd.h>
++typedef SSIZE_T ssize_t;
++#endif
++
+ #define OPENSSL_THREADS
+ 
+ #define OPENSSL_NO_BUF_FREELISTS

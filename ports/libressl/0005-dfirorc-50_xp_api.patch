@@ -1,38 +1,37 @@
 diff --git a/crypto/crypto_init.c b/crypto/crypto_init.c
-index 67e7920..8cf09f8 100644
+index 56f4460..cc0e61f 100644
 --- a/crypto/crypto_init.c
 +++ b/crypto/crypto_init.c
-@@ -42,6 +42,8 @@ OPENSSL_init_crypto_internal(void)
- 	OpenSSL_add_all_digests();
- }
+@@ -37,6 +37,8 @@ static pthread_once_t crypto_init_once = PTHREAD_ONCE_INIT;
+ static pthread_t crypto_init_thread;
+ static int crypto_init_cleaned_up;
  
 +const char* g_szCryptoInit_CompileTime = __TIME__;
 +
- int
- OPENSSL_init_crypto(uint64_t opts, const void *settings)
+ static void
+ OPENSSL_init_crypto_internal(void)
  {
 diff --git a/include/compat/pthread.h b/include/compat/pthread.h
-index 8b8c3c6..24f2c15 100644
+index 8211dda..a0bbc78 100644
 --- a/include/compat/pthread.h
 +++ b/include/compat/pthread.h
-@@ -31,14 +31,67 @@ _pthread_once_win32_cb(PINIT_ONCE once, PVOID param, PVOID *context)
+@@ -42,15 +42,68 @@ _pthread_once_win32_cb(PINIT_ONCE once, PVOID param, PVOID *context)
  	return TRUE;
  }
  
--static inline int
--pthread_once(pthread_once_t *once, void (*cb) (void))
 +extern const char* g_szCryptoInit_CompileTime;
-+
 +typedef BOOL (WINAPI* FnInitOnceExecuteOnce)(PINIT_ONCE InitOnce, PINIT_ONCE_FN InitFn, PVOID Context, LPVOID* Parameter);
 +
-+static inline int pthread_once(pthread_once_t* once, void (*cb)(void))
+ static inline int
+ pthread_once(pthread_once_t *once, void (*cb) (void))
  {
--	BOOL rc = InitOnceExecuteOnce(&once->once, _pthread_once_win32_cb, cb, NULL);
+ 	struct _pthread_win32_cb_arg arg = { .cb = cb };
+-	BOOL rc = InitOnceExecuteOnce(&once->once, _pthread_once_win32_cb, &arg, NULL);
 -	if (rc == 0)
--		return -1;
+-		return EINVAL;
 -	else
 -		return 0;
-+    // Api 'InitOnceExecuteOnce' is only supported since Vista
++	// Api 'InitOnceExecuteOnce' is only supported since Vista
 +    HMODULE hKernel32 = GetModuleHandleA("kernel32.dll");
 +    if (hKernel32)
 +    {
@@ -40,9 +39,9 @@ index 8b8c3c6..24f2c15 100644
 +            (FnInitOnceExecuteOnce)GetProcAddress(hKernel32, "InitOnceExecuteOnce");
 +        if (fnInitOnceExecuteOnce)
 +        {
-+            BOOL rc = fnInitOnceExecuteOnce(&once->once, _pthread_once_win32_cb, cb, NULL);
++            BOOL rc = fnInitOnceExecuteOnce(&once->once, _pthread_once_win32_cb, &arg, NULL);
 +            if (rc == 0)
-+                return -1;
++                return EINVAL;
 +            else
 +                return 0;
 +        }

@@ -1,15 +1,15 @@
 diff --git a/crypto/CMakeLists.txt b/crypto/CMakeLists.txt
-index 75e398a..8e8c679 100644
+index d4e0d60..861ec02 100644
 --- a/crypto/CMakeLists.txt
 +++ b/crypto/CMakeLists.txt
-@@ -804,6 +804,7 @@ endif()
+@@ -713,6 +713,7 @@ if(UNIX)
+ endif()
+ 
  if(WIN32)
- 	set(CRYPTO_SRC ${CRYPTO_SRC} compat/posix_win.c)
- 	set(CRYPTO_SRC ${CRYPTO_SRC} compat/inet_pton.c)
 +	set(CRYPTO_SRC ${CRYPTO_SRC} compat/bcrypt_gen_random.c)
- 	set(EXTRA_EXPORT ${EXTRA_EXPORT} gettimeofday)
- 	set(EXTRA_EXPORT ${EXTRA_EXPORT} getuid)
- 	set(EXTRA_EXPORT ${EXTRA_EXPORT} posix_perror)
+ 	set(CRYPTO_SRC ${CRYPTO_SRC} compat/crypto_lock_win.c)
+ 	set(CRYPTO_SRC ${CRYPTO_SRC} bio/b_win.c)
+ 	set(CRYPTO_UNEXPORT ${CRYPTO_UNEXPORT} BIO_s_log)
 diff --git a/crypto/compat/getentropy_win.c b/crypto/compat/getentropy_win.c
 index 64514b3..8ee21ca 100644
 --- a/crypto/compat/getentropy_win.c
