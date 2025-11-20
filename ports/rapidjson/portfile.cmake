@@ -2,8 +2,8 @@
 vcpkg_from_github(
     OUT_SOURCE_PATH SOURCE_PATH
     REPO Tencent/rapidjson
-    REF 232389d4f1012dddec4ef84861face2d2ba85709 # accessed on 2022-06-28
-    SHA512 0d7d751179abdaa6ebf6167d522651a2d13bc024d20c7e3f775c7397a8aab4cd866a6c91a55521ad7847e910822fcf982625c7308c74f5df663e6fd81336c9fc
+    REF 24b5e7a8b27f42fa16b96fc70aade9106cf7102f # accessed on 2022-06-28
+    SHA512 50f8723414a6e63eadd45f97be5c44e9fff2d06216c8cc4df802f5bfc2a9416a039f2c69e9bb1882f7e756cd38a7097eea05cab76c739f45805dc41617140799
     FILE_DISAMBIGUATOR 2
     HEAD_REF master
     PATCHES fix_putunsafe_fwd_declaration.patch
