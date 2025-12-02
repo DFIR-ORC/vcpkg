@@ -36,7 +36,7 @@ static int inet_pton4_xp(const char *src, u_char *dst);
 static int inet_pton6_xp(const char *src, u_char *dst);
 static int inet_pton_xp(int af, const char *src, void *dst);
 
-int inet_pton(int af, const char *src, void *dst)
+int inet_pton_wrapper(int af, const char *src, void *dst)
 {
     // Api 'inet_pton' is only supported since Vista
     const char szDll[] = "ws2_32.dll";
@@ -204,7 +204,7 @@ inet_pton6_xp(const char *src, u_char *dst)
 			continue;
 		}
 		if (ch == '.' && ((tp + NS_INADDRSZ) <= endp) &&
-		    inet_pton4(curtok, tp) > 0) {
+		    inet_pton4_xp(curtok, tp) > 0) {
 			tp += NS_INADDRSZ;
 			saw_xdigit = 0;
 			break;	/* '\0' was seen by inet_pton4(). */

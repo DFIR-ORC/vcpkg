@@ -22,6 +22,7 @@ vcpkg_extract_source_archive(
     0006-dfirorc-50_xp_api_shared_crt.patch
     0007-dfirorc-xp_inet_pton.patch
     0008-dfirorc-xp_bcrypt_gen_random.patch
+    0009-dfirorc-fix-3.9.2.patch
 )
 
 file(COPY ${CMAKE_CURRENT_LIST_DIR}/inet_pton.c DESTINATION "${SOURCE_PATH}/crypto/compat/")
